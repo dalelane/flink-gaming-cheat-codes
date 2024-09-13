@@ -6,7 +6,7 @@
 
 ## Setup
 
-The blog post describes a simplified view of the demo - the full version is actually more like:
+The <a href="https://dalelane.co.uk/blog/?p=5286">blog post</a> describes a simplified view of the demo - the full version is actually more like:
 
 ![architecture diagram](./diagrams/diagram-full.png)
 
