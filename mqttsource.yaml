@@ -1,0 +1,25 @@
+apiVersion: eventstreams.ibm.com/v1beta2
+kind: KafkaConnector
+metadata:
+  labels:
+    eventstreams.ibm.com/cluster: kafka-connect-cluster
+  name: konami-source
+  namespace: event-automation
+spec:
+  autoRestart:
+    enabled: true
+  class: io.lenses.streamreactor.connect.mqtt.source.MqttSourceConnector
+  config:
+    key.converter.schemas.enable: false
+    key.converter: org.apache.kafka.connect.storage.StringConverter
+    value.converter.schemas.enable: false
+    value.converter: org.apache.kafka.connect.converters.ByteArrayConverter
+    #
+    connect.mqtt.client.id: dalelanesource
+    connect.mqtt.hosts: tcp://public-mqtt-broker:1883
+    connect.mqtt.service.quality: 1
+    #
+    connect.mqtt.kcql: INSERT INTO KONAMI.BUTTONPRESSES SELECT * FROM /konami/buttonpresses/+
+    #
+    transforms: converttojson
+    transforms.converttojson.type: com.ibm.eventstreams.lenses.KonamiSourceTransform

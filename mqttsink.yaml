@@ -1,0 +1,29 @@
+﻿apiVersion: eventstreams.ibm.com/v1beta2
+kind: KafkaConnector
+metadata:
+  labels:
+    eventstreams.ibm.com/cluster: kafka-connect-cluster
+  name: konami-sink
+  namespace: event-automation
+spec:
+  autoRestart:
+    enabled: true
+  class: io.lenses.streamreactor.connect.mqtt.sink.MqttSinkConnector
+  config:
+    key.converter.schemas.enable: false
+    key.converter: org.apache.kafka.connect.storage.StringConverter
+    value.converter.schemas.enable: false
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    #
+    topics: KONAMI.CHEATS
+    #
+    connect.mqtt.client.id: dalelanesink
+    connect.mqtt.hosts: tcp://public-mqtt-broker:1883
+    connect.mqtt.kcql: INSERT INTO _key SELECT cheat FROM KONAMI.CHEATS
+    connect.mqtt.service.quality: 1
+    connect.mqtt.clean: true
+    connect.mqtt.error.policy: RETRY
+    connect.mqtt.max.retries: 10
+    connect.mqtt.retry.interval: 10000
+    #
+    errors.tolerance: all
